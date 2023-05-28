@@ -20,6 +20,7 @@ def calculate_similarity_ratio(a, b):
 
 # Function to group similar filenames together
 def group_filenames(path):
+    print(path)
     grouped_files = {}
     for root, dirs, files in os.walk(path):
         for filename in files:
@@ -44,13 +45,15 @@ def pair_filenames(english_filenames, french_filenames):
         for french_filename in french_filenames:
             french_language = classify_filename(french_filename)
             
-            if english_language == french_language:
+            if english_filename != french_filename:
                 similarity = calculate_similarity_ratio(english_filename, french_filename)
+                
                 if similarity > max_similarity:
                     max_similarity = similarity
                     best_match = french_filename
         
         pairs.append((english_filename, best_match))
+    print(pairs)
     return pairs
 
 def add_pair_of_texts_to_memory(en_text, fr_text, en_filename, fr_filename):
@@ -81,8 +84,9 @@ def save_memory():
         json.dump(memory, outfile)
 
 def cycle_through_dirs(path):
-
+    
     for root, dirs, files in os.walk(path):
+        
         for dir in dirs:
             dir_path = os.path.join(root, dir)
             grouped = group_filenames(dir_path)
@@ -98,6 +102,7 @@ def cycle_through_dirs(path):
                         fr_filename = pair[1]
                         en_text = extract_text_from_docx(en_filename)
                         fr_text = extract_text_from_docx(fr_filename)
+                        # print('Extracted')
                         add_pair_of_texts_to_memory(en_text, fr_text, en_filename, fr_filename)
 
                         print("English : ",en_filename)
