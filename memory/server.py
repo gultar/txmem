@@ -8,9 +8,12 @@ import os
 
 # Load data from 'memory.json' into the memory variable
 memory = {}
-memory_path = os.path.join(os.path.dirname(__file__), 'memory.json')
-with open(memory_path, 'r') as file:
-    memory = json.load(file)
+try:
+    memory_path = os.path.join(os.path.dirname(__file__), 'memory.json')
+    with open(memory_path, 'r') as file:
+        memory = json.load(file)
+except:
+    print("The Server failed to load your memory.json file. Make sure you  use pair.py to align your documents and translations")
 
 # Initialize Flask application
 app = Flask(__name__)
