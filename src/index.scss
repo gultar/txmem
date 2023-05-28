@@ -1,0 +1,232 @@
+$nav-height: 60px;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+
+  &:hover {
+    color: #535bf2;
+  }
+}
+
+.nav-container {
+  display: block;
+  position: fixed;
+  height: $nav-height;
+  width: 100%;
+}
+
+.nav {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  height: $nav-height;
+  justify-content: center;
+  border-bottom: 2px solid black;
+}
+
+.search-bar {
+  display: flex;
+
+  .search-bar-input {
+    width: 400px;
+  }
+}
+
+html {
+  width: 100%;
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  overflow: hidden; /* Prevent body from scrolling */
+}
+
+.highlight {
+  background-color: rgba(255, 255, 0, 0.6);
+  color: black;
+}
+
+.main {
+  width: 100%;
+  max-width: 100%; /* Optional: Set a max width for the form */
+}
+
+.section-header {
+  width: 100%;
+  display: block;
+  text-align: center;
+}
+
+.display-output {
+  height: calc(100vh - $nav-height); /* Use viewport height to fill the screen */
+  margin-top: $nav-height;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: hidden; /* Hide any content that exceeds the viewport height */
+}
+
+.active-text {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  font-size: small;
+  overflow-y: auto;
+  top: 0; /* Stick to the top of the container */
+  height: calc(100vh - 60px); /* Subtract some padding/margin if needed */
+}
+
+.source,
+.target {
+  display: block;
+  width: 50%;
+  padding: 5px;
+}
+
+.test-block {
+  display: block;
+  width: 100%;
+  height: 10px;
+}
+
+.linguee {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  overflow-y: auto;
+  top: 0; /* Stick to the top of the container */
+  height: calc(100vh - 60px); /* Subtract some padding/margin if needed */
+  padding: 5px;
+}
+
+.linguee-example-line {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  list-style: none;
+}
+
+.linguee-link {
+  font-size: x-small;
+  display: inline-block;
+  width: 100%;
+}
+
+.src,
+.dst {
+  font-size: smaller;
+  display: block;
+  overflow-wrap: break-word;
+  width: 50%;
+}
+
+.segments {
+  width: 30%;
+  overflow: auto;
+  font-size: small;
+  padding-top: 10px;
+  top: 0; /* Stick to the top of the container */
+  height: calc(100vh - 60px); /* Subtract some padding/margin if needed */
+}
+
+.sentence-match {
+  background-color: darkorange;
+  color: black;
+}
+
+.sentence {
+  /* display: block;
+  height:60px;
+  overflow-y:scroll;
+  overflow-wrap:break-word;
+  vertical-align: top; */
+}
+
+.match-filename {
+  padding-bottom: 20px;
+  list-style: none;
+}
+
+.match-segment {
+  padding-bottom: 4px;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+
+  &:hover {
+    border-color: #646cff;
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: 4px auto -webkit-focus-ring-color;
+  }
+}
+
+/* Optional: Hide the default scrollbar */
+.active-text::-webkit-scrollbar,
+.segments::-webkit-scrollbar {
+  width: 6px;
+  background-color: transparent;
+}
+
+.active-text::-webkit-scrollbar-thumb,
+.segments::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 3px;
+}
+
+.active-text::-webkit-scrollbar-thumb:hover,
+.segments::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+}
