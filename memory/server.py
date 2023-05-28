@@ -4,10 +4,12 @@ from flask_cors import CORS
 from lookup import find_matching_sentences
 from multiprocessing import Pool
 import requests
+import os
 
 # Load data from 'memory.json' into the memory variable
 memory = {}
-with open('memory.json', 'r') as file:
+memory_path = os.path.join(os.path.dirname(__file__), 'memory.json')
+with open(memory_path, 'r') as file:
     memory = json.load(file)
 
 # Initialize Flask application

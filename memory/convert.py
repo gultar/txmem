@@ -4,6 +4,8 @@ import os
 import win32com.client as win32
 from win32com.client import constants
 import os
+
+
 path = os.path.join(os.path.dirname(__file__), 'convert\\**\*.doc')
 # Create list of paths to .doc files
 doc_paths = glob(path, recursive=True)
