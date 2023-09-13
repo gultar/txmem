@@ -12,6 +12,10 @@ The translation memory interface includes the following features:
 - Active Text: Shows the selected source and target texts, with a highlighted segment.
 - Linguee Integration: Retrieves additional information from Linguee related to the search query.
 
+## Creating the translation memory
+
+To create the translation memory, you need to place each pair of files (source and target) in a separate folder, and the folder needs to be named exactly like the source file. 
+
 ## Getting Started
 
 To use the translation memory interface, follow these steps:

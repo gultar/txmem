@@ -21,18 +21,18 @@ app = Flask(__name__)
 # Enable Cross-Origin Resource Sharing (CORS) for all routes
 CORS(app)
 
-def process_entry(entry, expression):
+def process_entry(entry, expression, lang='EN'):
     # Process each entry in the memory dictionary by extracting the filename and data
     filename, data = entry
     
     # Extract the English text from the data
-    en_text = data['EN']['text']
+    text = data[lang]['text']
     
     # Find matching sentences in the English text based on the given expression
-    en_matching_sentences = find_matching_sentences(en_text, expression)
+    matching_sentences = find_matching_sentences(text, expression)
     
     # Return a list of tuples containing the filename and matching sentences
-    return [(filename, sentence) for sentence in en_matching_sentences]
+    return [(filename, sentence) for sentence in matching_sentences]
 
 @app.route('/search', methods=['GET'])
 def search_expression():

@@ -16,19 +16,23 @@ def process_document(document, expression):
     en_text = entry['EN']['text']
     fr_text = entry['FR']['text']
     
-    en_sentences = split_text_into_sentences(en_text)
-    fr_sentences = split_text_into_sentences(fr_text)
+    if isinstance(en_text, str) and isinstance(fr_text, str):
+        en_sentences = split_text_into_sentences(en_text)
+        fr_sentences = split_text_into_sentences(fr_text)
+        
+        matching_sentences = []
+        fr_matching_sentences = []
+        
+        for en_sentence, fr_sentence in zip(en_sentences, fr_sentences):
+            en_matching_sentences = find_matching_sentences(en_sentence, expression)
+            if en_matching_sentences:
+                matching_sentences += en_matching_sentences
+                fr_matching_sentences.append(fr_sentence)
     
-    matching_sentences = []
-    fr_matching_sentences = []
     
-    for en_sentence, fr_sentence in zip(en_sentences, fr_sentences):
-        en_matching_sentences = find_matching_sentences(en_sentence, expression)
-        if en_matching_sentences:
-            matching_sentences += en_matching_sentences
-            fr_matching_sentences.append(fr_sentence)
-    
-    return matching_sentences, fr_matching_sentences
+        return matching_sentences, fr_matching_sentences
+    else:
+        return [],[]
 
 def search_expression(expression):
     st = time.time()

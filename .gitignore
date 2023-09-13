@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+./amb
+memory/files/*
+memory/convert/*
+memory/__pycache__
+memory/amb/*
+memory/amb
+memory.json

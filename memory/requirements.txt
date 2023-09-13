@@ -1,0 +1,4 @@
+fuzzywuzzy
+flask
+flask_cors
+docx2txt

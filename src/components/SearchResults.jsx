@@ -10,7 +10,7 @@ function SearchResults({ results, onFileClick }) {
   };
 
   return (
-    <div className="segments">
+    <div className="segments ui-element">
         <h2 className='section-header'>Files</h2>
       {Object.keys(results).map((filename) => (
         <ul className="match-filename" key={filename}>

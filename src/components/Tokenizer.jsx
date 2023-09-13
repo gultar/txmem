@@ -9,13 +9,24 @@ function Tokenizer({ text, foundSegment, scrollRef }) {
     return sentences;
   };
 
-  const selectClasses = (segment, foundSegment) =>{
-    return (segment==foundSegment?'sentence-match sentence':"sentence")
+  
+  const selectClasses = (segment, foundSegment) => {
+    return (segment === foundSegment ? 'sentence-match sentence' : 'sentence');
   }
 
-  return splitTextIntoSentences(text).map((segment) => (
-    <p className={selectClasses(segment, foundSegment)} ref={(segment==foundSegment?scrollRef:null)}>{segment}</p>
-  ));
+  const sentences = splitTextIntoSentences(text);
+  
+  return sentences
+    .filter(segment => segment.trim() !== '') // Filter out empty segments
+    .map((segment, index) => (
+      <p
+        key={index} // It's recommended to add a unique key when mapping over elements
+        className={selectClasses(segment, foundSegment)}
+        ref={(segment === foundSegment ? scrollRef : null)}
+      >
+        {segment}
+      </p>
+    ));
 }
 
 export default Tokenizer;

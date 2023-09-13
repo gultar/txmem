@@ -34,7 +34,7 @@ function Linguee({ query }) {
   }, [apiUrl, query]);
 
   return (
-    <div className="linguee">
+    <div className="linguee ui-element">
         <h3 className='section-header'>Linguee</h3>
         <div className="translation-section">
             <h5>Suggestion de traduction: </h5>

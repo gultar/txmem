@@ -3,7 +3,7 @@ from difflib import SequenceMatcher
 from docx_extractor import extract_text_from_docx
 import lxml.etree as ET
 import json
-from files_classifier import classify_filename
+from files_classifier import is_french_filename
 # This here is to create a list of words, but it's optional
 from make_keywords import extract_keywords
 
@@ -19,18 +19,23 @@ def calculate_similarity_ratio(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
 # Function to group similar filenames together
-def group_filenames(path):
-    print(path)
-    grouped_files = {}
+def group_filenames(path, folder_name):
+    
+    grouped_files = []
     for root, dirs, files in os.walk(path):
+        pair = {
+            "English":"",
+            "French":""
+        }
         for filename in files:
-            if "~$" not in filename:
-                filepath = os.path.join(root, filename)
-                language = classify_filename(filename)
-                
-                if language not in grouped_files:
-                    grouped_files[language] = []
-                grouped_files[language].append(filepath)
+            filepath = os.path.join(root, filename)
+            
+            if folder_name in filename:
+                pair["English"] = filepath
+            else:
+                pair["French"] = filepath
+
+        grouped_files.append(pair)
     return grouped_files
 
 
@@ -40,10 +45,10 @@ def pair_filenames(english_filenames, french_filenames):
     for english_filename in english_filenames:
         max_similarity = 0
         best_match = None
-        english_language = classify_filename(english_filename)
+        english_language = is_french_filename(english_filename)
         
         for french_filename in french_filenames:
-            french_language = classify_filename(french_filename)
+            french_language = is_french_filename(french_filename)
             
             if english_filename != french_filename:
                 similarity = calculate_similarity_ratio(english_filename, french_filename)
@@ -53,7 +58,6 @@ def pair_filenames(english_filenames, french_filenames):
                     best_match = french_filename
         
         pairs.append((english_filename, best_match))
-    print(pairs)
     return pairs
 
 def add_pair_of_texts_to_memory(en_text, fr_text, en_filename, fr_filename):
@@ -76,42 +80,67 @@ def add_pair_of_texts_to_memory(en_text, fr_text, en_filename, fr_filename):
         }
     }
 
+import win32com.client
+
+def extract_text_from_doc(doc_file_path):
+    try:
+        word = win32com.client.Dispatch("Word.Application")
+        word.Visible = False  # Prevents the Word application window from opening
+
+        doc = word.Documents.Open(doc_file_path)
+        content = doc.Content.Text
+
+        doc.Close()
+        word.Quit()
+
+        return content
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return None
+    
+def extract_text(doc_file_path, is_docx=True):
+    if is_docx:
+        return extract_text_from_docx(doc_file_path)
+    else:
+        return extract_text_from_doc(doc_file_path)
 
 
 def save_memory():
     # Write the extracted text to a JSON file
-    with open('memory.json', 'w') as outfile:
+    with open('memory.json', 'w', encoding="utf-8") as outfile:
         json.dump(memory, outfile)
 
 def cycle_through_dirs(path):
-    
     for root, dirs, files in os.walk(path):
-        
         for dir in dirs:
             dir_path = os.path.join(root, dir)
-            grouped = group_filenames(dir_path)
-            if 'révision' not in dir and 'revision' not in dir and 'référence' not in dir and 'Révision' not in dir and 'révisé' not in dir:
+            grouped_pairs = group_filenames(dir_path, dir)
+            
 
-                print('DIR:', dir)
+            for pair in grouped_pairs:
+                en_filename = pair["English"]
+                fr_filename = pair["French"]
 
-                if 'English' in grouped and 'French' in grouped:
-                    pairs = pair_filenames(grouped['English'], grouped['French'])
+                try:
+                    is_docx_en = ".docx" in en_filename
+                    is_docx_fr = ".docx" in fr_filename
 
-                    for pair in pairs:
-                        en_filename = pair[0]
-                        fr_filename = pair[1]
-                        en_text = extract_text_from_docx(en_filename)
-                        fr_text = extract_text_from_docx(fr_filename)
-                        # print('Extracted')
-                        add_pair_of_texts_to_memory(en_text, fr_text, en_filename, fr_filename)
+                    en_text = extract_text(en_filename, is_docx_en)
+                    fr_text = extract_text(fr_filename, is_docx_fr)
 
-                        print("English : ",en_filename)
-                        print("French : ",fr_filename)
-                        print()
+                    add_pair_of_texts_to_memory(en_text, fr_text, en_filename, fr_filename)
 
+                    print("English : ",en_filename)
+                    print("French : ",fr_filename)
 
+                except Exception as e:
+                    print(e)
+                                
+                
+                
                 print()
-                print("------------")
+
+
     save_memory()
 
 # Test the function

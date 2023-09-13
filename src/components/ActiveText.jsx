@@ -5,7 +5,7 @@ function ActiveText({ source, target, foundSegment, scrollRef, src_filename, tar
     console.log(foundSegment, scrollRef, src_filename, target_filename)
   return (
     
-    <div className="active-text">
+    <div className="active-text ui-element">
         
       <div className="source">
         <h3>{src_filename}</h3>

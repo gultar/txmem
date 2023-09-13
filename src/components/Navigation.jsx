@@ -7,7 +7,7 @@ function Navigation({ onSubmit, searching }) {
       <div className="nav-container">
         <div className="nav">
             <SearchForm onSubmit={onSubmit}/>
-            {searching && <div>Searching...</div>}
+            {searching && <div className="search-message">Searching...</div>}
         </div>
       </div>
     );
