@@ -29,3 +29,5 @@ memory/__pycache__
 memory/amb/*
 memory/amb
 memory.json
+memory/files
+memory/memory.json

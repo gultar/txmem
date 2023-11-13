@@ -88,7 +88,10 @@ def extract_text_from_doc(doc_file_path):
         word.Visible = False  # Prevents the Word application window from opening
 
         doc = word.Documents.Open(doc_file_path)
-        content = doc.Content.Text
+        if doc.has_key("Content"):
+            content = doc.Content.Text
+        else:
+            return ""
 
         doc.Close()
         word.Quit()
@@ -111,6 +114,7 @@ def save_memory():
         json.dump(memory, outfile)
 
 def cycle_through_dirs(path):
+    errors = []
     for root, dirs, files in os.walk(path):
         for dir in dirs:
             dir_path = os.path.join(root, dir)
@@ -126,12 +130,17 @@ def cycle_through_dirs(path):
                     is_docx_fr = ".docx" in fr_filename
 
                     en_text = extract_text(en_filename, is_docx_en)
+
                     fr_text = extract_text(fr_filename, is_docx_fr)
 
-                    add_pair_of_texts_to_memory(en_text, fr_text, en_filename, fr_filename)
+                    if len(en_text) != 0 and len(fr_text) != 0:
+                        add_pair_of_texts_to_memory(en_text, fr_text, en_filename, fr_filename)
 
-                    print("English : ",en_filename)
-                    print("French : ",fr_filename)
+                        print("English : ",en_filename)
+                        print("French : ",fr_filename)
+                    else:
+                        print("Could not load TX pair for : ",en_filename)
+                        errors.append(en_filename)
 
                 except Exception as e:
                     print(e)
@@ -142,7 +151,12 @@ def cycle_through_dirs(path):
 
 
     save_memory()
+    print("Encountered an error with the following TX pairs:")
+    for e in errors: print("=>",e)
+    print("=============================================")
+    print("FINISHED CREATING MEMORY")
+    print("=============================================")
 
 # Test the function
 cycle_through_dirs(dir_to_build)
-
+print("FINISHED CREATING MEMORY")
